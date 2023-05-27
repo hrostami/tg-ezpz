@@ -1,0 +1,10 @@
+[Unit]
+Description=Telegram for EZPZ service
+After=multi-user.target
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=10
+ExecStart=/usr/bin/python3 /root/tg-ezpz/bot.py
+[Install]
+WantedBy=multi-user.target
