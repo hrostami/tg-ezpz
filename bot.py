@@ -17,6 +17,13 @@ except ImportError:
     from PIL import Image
     from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Filters
 
+if not os.path.exists('/etc/systemd/system/tg-ezpz.service'):
+    print('--------> Setting up startup \n\n')
+    os.system('curl -Lo /etc/systemd/system/tg-ezpz.service https://raw.githubusercontent.com/hrostami/tg-ezpz/master/tg-ezpz.service')
+    os.system('systemctl daemon-reload')
+    os.system('sleep 0.2')
+    os.system('systemctl enable tg-ezpz.service')
+    
 bot_token = os.environ.get('BOT_TOKEN')
 admin_id = os.environ.get('ADMIN_ID')
 if not bot_token:
