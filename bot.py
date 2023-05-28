@@ -56,6 +56,7 @@ commands_guide = ("Add one of the following commands after /run :\n"
                     "show-config <username> -->Shows the config and QR code of the user\n"
                     "delete-user <username> -->Delete the user\n"
                     )
+
 def check_environment_variable(variable_name):
     if variable_name in os.environ:
         value = os.environ[variable_name]
@@ -118,8 +119,9 @@ def command_handler(update, context):
                 output = output.stdout.strip()
                 if output:
                     # Extract the "vless://" part using regex
-                    vless_part = re.search(r"vless://(.+)", output).group(0)
-                    if vless_part:
+                    
+                    if "vless" in output:
+                        vless_part = re.search(r"vless://(.+)", output).group(0)
                         # Create a QR code from the "vless://" part
                         qr = qrcode.QRCode()
                         qr.add_data(vless_part)
