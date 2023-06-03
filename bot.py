@@ -33,14 +33,16 @@ try:
     with open('user_data.pkl', 'rb') as f:
         user_data = pickle.load(f)
 except FileNotFoundError:
-    user_data = {'ADMIN_ID':int(sys.argv[1]), 'BOT_TOKEN':sys.argv[2]}
+    user_data = {'ADMIN_ID':int(sys.argv[1]), 'BOT_TOKEN':sys.argv[2], 'DOMAIN':'domain'}
     if sys.argv[3] :
         user_data['DOMAIN'] = sys.argv[3]
-        domain = sys.argv[3]
     with open('/root/tg-ezpz/user_data.pkl', 'wb') as f:
         pickle.dump(user_data, f)
-bot_token = user_data['BOT_TOKEN']
-admin_id = user_data['ADMIN_ID']
+finally:
+    bot_token = user_data['BOT_TOKEN']
+    admin_id = user_data['ADMIN_ID']
+    domain = user_data['DOMAIN']
+
 if not bot_token:
     logging.error('Telegram bot token is not set ---> exiting')
     sys.exit(1)
