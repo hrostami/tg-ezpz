@@ -33,7 +33,10 @@ try:
     with open('user_data.pkl', 'rb') as f:
         user_data = pickle.load(f)
 except FileNotFoundError:
-    user_data = {'ADMIN_ID':sys.argv[1], 'BOT_TOKEN':sys.argv[2]}
+    user_data = {'ADMIN_ID':int(sys.argv[1]), 'BOT_TOKEN':sys.argv[2]}
+    if sys.argv[3] :
+        user_data['DOMAIN'] = sys.argv[3]
+        domain = sys.argv[3]
     with open('user_data.pkl', 'wb') as f:
         pickle.dump(user_data, f)
 bot_token = user_data['BOT_TOKEN']
@@ -43,6 +46,7 @@ if not bot_token:
     sys.exit(1)
 else:
     admin_id = int(admin_id)   
+
 
 
 ezpz_link = 'https://raw.githubusercontent.com/aleskxyz/reality-ezpz/master/reality-ezpz.sh'
@@ -136,6 +140,9 @@ def command_handler(update, context):
                     
                     if "vless" in output:
                         vless_part = re.search(r"vless://(.+)", output).group(0)
+                        if domain and os.path.exists(f"/var/www/{domain}/html/index.html"):
+                            with open(f"/var/www/{domain}/html/index.html", "w") as file:
+                                file.write(vless_part)
                         # Create a QR code from the "vless://" part
                         qr = qrcode.QRCode()
                         qr.add_data(vless_part)
