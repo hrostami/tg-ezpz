@@ -3,6 +3,7 @@ import logging
 import os
 import re
 import sys
+import base64
 import pickle
 try:
     import qrcode
@@ -140,9 +141,12 @@ def command_handler(update, context):
                     
                     if "vless" in output:
                         vless_part = re.search(r"vless://(.+)", output).group(0)
+                        # CREATE BASE64
+                        encodedBytes = base64.b64encode(vless_part.encode("utf-8"))
+                        encodedStr = str(encodedBytes, "utf-8")
                         if domain and os.path.exists(f"/var/www/{domain}/html/index.html"):
                             with open(f"/var/www/{domain}/html/index.html", "w") as file:
-                                file.write(vless_part)
+                                file.write(encodedStr)
                         # Create a QR code from the "vless://" part
                         qr = qrcode.QRCode()
                         qr.add_data(vless_part)
