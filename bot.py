@@ -204,10 +204,6 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('start', start_handler))
     updater.dispatcher.add_handler(CommandHandler('log', log_handler))
     updater.dispatcher.add_error_handler(MessageHandler(Filters.all, error))
-    if not check_environment_variable('ADMIN_ID') :
-        logging.error("ADMIN_ID hasn't been set---> exiting")
-        print("ADMIN_ID hasn't been set---> exiting")
-        sys.exit(1)
     updater.bot.send_message(chat_id=admin_id, text="EZPZ bot started")
     updater.start_polling()
     updater.idle()
