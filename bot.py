@@ -37,7 +37,7 @@ except FileNotFoundError:
     if sys.argv[3] :
         user_data['DOMAIN'] = sys.argv[3]
         domain = sys.argv[3]
-    with open('user_data.pkl', 'wb') as f:
+    with open('/root/tg-ezpz/user_data.pkl', 'wb') as f:
         pickle.dump(user_data, f)
 bot_token = user_data['BOT_TOKEN']
 admin_id = user_data['ADMIN_ID']
