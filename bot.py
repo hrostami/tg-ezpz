@@ -3,7 +3,7 @@ import logging
 import os
 import re
 import sys
-
+import pickle
 try:
     import qrcode
     from PIL import Image
@@ -12,10 +12,15 @@ except ImportError:
     print('\n --> Installing requirements\n')
     requirements = ['Pillow', 'qrcode', 'python-telegram-bot==13.5']
     for library in requirements:
-        subprocess.run(f'pip3 install {library}'.split(' '))
+        process = subprocess.run(f'pip3 install {library}'.split(' '))
+        if process.returncode != 0:
+            print(f"Error occured while installing {library}\nPlease install it manually using:\npip install {library}")
+            sys.exit(1)
     import qrcode
     from PIL import Image
     from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Filters
+
+logging.basicConfig(filename='bot.log', filemode='w', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 if not os.path.exists('/etc/systemd/system/tg-ezpz.service'):
     print('--------> Setting up startup \n\n')
@@ -24,18 +29,27 @@ if not os.path.exists('/etc/systemd/system/tg-ezpz.service'):
     os.system('sleep 0.2')
     os.system('systemctl enable tg-ezpz.service')
 
-bot_token = os.environ.get('BOT_TOKEN')
-admin_id = os.environ.get('ADMIN_ID')
+try:
+    with open('user_data.pkl', 'rb') as f:
+        user_data = pickle.load(f)
+except FileNotFoundError:
+    user_data = {'ADMIN_ID':sys.argv[1], 'BOT_TOKEN':sys.argv[2]}
+    with open('user_data.pkl', 'wb') as f:
+        pickle.dump(user_data, f)
+bot_token = user_data['BOT_TOKEN']
+admin_id = user_data['ADMIN_ID']
 if not bot_token:
     logging.error('Telegram bot token is not set ---> exiting')
     sys.exit(1)
 else:
     admin_id = int(admin_id)   
 
-logging.basicConfig(filename='bot.log', filemode='w', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 ezpz_link = 'https://raw.githubusercontent.com/aleskxyz/reality-ezpz/master/reality-ezpz.sh'
 
+home = os.path.expanduser('~')
+if not os.path.exists(f'{home}/reality'):
+    os.system(f'bash <(curl -sL {ezpz_link})')
 commands_guide = ("Add one of the following commands after /run :\n\n"
                     "transport <tcp|h2|grpc> --> Transport protocol (h2, grpc, tcp, default: tcp)\n\n"
                     "domain <domain.com> -->Domain to use as SNI (default: www.google.com)\n\n"
