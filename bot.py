@@ -51,9 +51,7 @@ else:
 
 ezpz_link = 'https://raw.githubusercontent.com/aleskxyz/reality-ezpz/master/reality-ezpz.sh'
 
-home = os.path.expanduser('~')
-if not os.path.exists(f'{home}/reality'):
-    os.system(f'bash <(curl -sL {ezpz_link})')
+
 commands_guide = ("Add one of the following commands after /run :\n\n"
                     "transport <tcp|h2|grpc> --> Transport protocol (h2, grpc, tcp, default: tcp)\n\n"
                     "domain <domain.com> -->Domain to use as SNI (default: www.google.com)\n\n"
