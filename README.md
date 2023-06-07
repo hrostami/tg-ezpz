@@ -5,7 +5,7 @@ first run reality-ezpz script for the first time:
 ```bash
 bash <(curl -sL https://raw.githubusercontent.com/aleskxyz/reality-ezpz/master/reality-ezpz.sh)
 ```
-Then setup the telegram bot using commands below
+Then setup the telegram bot using commands below. Replace admin_id with your numeral telegram ID(get it from @userinfobot) and bot_token with telegram api token from BotFather.
 ```bash
 mkdir tg-ezpz 
 curl -Lo /root/tg-ezpz/bot.py https://raw.githubusercontent.com/hrostami/tg-ezpz/master/bot.py
